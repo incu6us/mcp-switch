@@ -96,8 +96,8 @@ pub fn load_config(path: &Path) -> Result<Value> {
         return Ok(serde_json::json!({"mcpServers": {}}));
     }
 
-    let content = fs::read_to_string(path)
-        .with_context(|| format!("failed to read {}", path.display()))?;
+    let content =
+        fs::read_to_string(path).with_context(|| format!("failed to read {}", path.display()))?;
 
     let value: Value = serde_json::from_str(&content)
         .with_context(|| format!("failed to parse JSON in {}", path.display()))?;
@@ -123,8 +123,13 @@ pub fn save_config(path: &Path, value: &Value, dry_run: bool) -> Result<()> {
     let tmp_path = path.with_extension("json.tmp");
     fs::write(&tmp_path, &json)
         .with_context(|| format!("failed to write {}", tmp_path.display()))?;
-    fs::rename(&tmp_path, path)
-        .with_context(|| format!("failed to rename {} to {}", tmp_path.display(), path.display()))?;
+    fs::rename(&tmp_path, path).with_context(|| {
+        format!(
+            "failed to rename {} to {}",
+            tmp_path.display(),
+            path.display()
+        )
+    })?;
 
     Ok(())
 }

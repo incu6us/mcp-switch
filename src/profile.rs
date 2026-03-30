@@ -153,7 +153,11 @@ pub fn cmd_list(json_output: bool) -> Result<()> {
                 .and_then(|v| v.get("servers")?.as_object().map(|s| s.len()))
                 .unwrap_or(0);
 
-            println!("  {}  {}", name.bold(), format!("({} servers)", count).dimmed());
+            println!(
+                "  {}  {}",
+                name.bold(),
+                format!("({} servers)", count).dimmed()
+            );
         }
     }
 

@@ -2,7 +2,11 @@ use clap::{Args, Parser, Subcommand};
 use std::path::PathBuf;
 
 #[derive(Parser)]
-#[command(name = "mcp-switch", version, about = "Enable/disable MCP servers for Claude Code")]
+#[command(
+    name = "mcp-switch",
+    version,
+    about = "Enable/disable MCP servers for Claude Code"
+)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Command,

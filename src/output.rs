@@ -105,7 +105,7 @@ pub fn print_status_json(servers: Option<&Map<String, Value>>, filter: Option<&s
     let entries: Vec<Value> = match servers {
         Some(s) => s
             .iter()
-            .filter(|(k, _)| filter.map_or(true, |f| k.as_str() == f))
+            .filter(|(k, _)| filter.is_none_or(|f| k.as_str() == f))
             .map(|(name, cfg)| {
                 let mut entry = cfg.clone();
                 entry

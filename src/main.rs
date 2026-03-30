@@ -14,7 +14,11 @@ fn main() -> Result<()> {
 
     let is_mutation = matches!(
         cli.command,
-        Command::On { .. } | Command::Off { .. } | Command::Profile { action: ProfileAction::Apply { .. } }
+        Command::On { .. }
+            | Command::Off { .. }
+            | Command::Profile {
+                action: ProfileAction::Apply { .. }
+            }
     );
 
     match cli.command {
