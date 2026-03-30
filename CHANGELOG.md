@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/incu6us/mcp-switch/compare/v1.0.1...v1.0.2) (2026-03-30)
+
+
+### Bug Fixes
+
+* CI/CD alignment ([75c457d](https://github.com/incu6us/mcp-switch/commit/75c457de7fbaf2bf4f0314c447ac98f2c3caf480))
+* CI/CD alignment ([2aedc56](https://github.com/incu6us/mcp-switch/commit/2aedc56d370171941deb9db28fa4c4da8a166bd8))
+
 ## [1.0.1](https://github.com/incu6us/mcp-switch/compare/v1.0.0...v1.0.1) (2026-03-30)
 
 

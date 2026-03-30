@@ -1,6 +1,6 @@
 [package]
 name = "mcp-switch"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 description = "Enable/disable MCP servers for Claude Code"
 
