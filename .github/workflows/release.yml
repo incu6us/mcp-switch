@@ -99,13 +99,78 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-
-      - name: Update Homebrew formula
-        uses: dawidd6/action-homebrew-bump-formula@v4
+      - name: Download all artifacts
+        uses: actions/download-artifact@v5
         with:
-          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          tap: ${{ github.repository_owner }}/homebrew-tap
-          formula: mcp-switch
-          tag: ${{ github.ref_name }}
-        continue-on-error: true
+          path: artifacts
+
+      - name: Compute checksums
+        id: sums
+        run: |
+          cd artifacts
+          echo "darwin_amd64=$(sha256sum mcp-switch-x86_64-apple-darwin/mcp-switch-x86_64-apple-darwin.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+          echo "darwin_arm64=$(sha256sum mcp-switch-aarch64-apple-darwin/mcp-switch-aarch64-apple-darwin.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+          echo "linux_amd64=$(sha256sum mcp-switch-x86_64-unknown-linux-gnu/mcp-switch-x86_64-unknown-linux-gnu.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+          echo "linux_arm64=$(sha256sum mcp-switch-aarch64-unknown-linux-gnu/mcp-switch-aarch64-unknown-linux-gnu.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Generate Homebrew formula
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          TAG="${GITHUB_REF_NAME}"
+          cat > mcp-switch.rb << EOF
+          # typed: false
+          # frozen_string_literal: true
+
+          class McpSwitch < Formula
+            desc "CLI tool to toggle MCP servers for Claude Code"
+            homepage "https://github.com/incu6us/mcp-switch"
+            version "${VERSION}"
+            license "MIT"
+
+            on_macos do
+              if Hardware::CPU.intel?
+                url "https://github.com/incu6us/mcp-switch/releases/download/${TAG}/mcp-switch-x86_64-apple-darwin.tar.gz"
+                sha256 "${{ steps.sums.outputs.darwin_amd64 }}"
+              end
+              if Hardware::CPU.arm?
+                url "https://github.com/incu6us/mcp-switch/releases/download/${TAG}/mcp-switch-aarch64-apple-darwin.tar.gz"
+                sha256 "${{ steps.sums.outputs.darwin_arm64 }}"
+              end
+            end
+
+            on_linux do
+              if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
+                url "https://github.com/incu6us/mcp-switch/releases/download/${TAG}/mcp-switch-x86_64-unknown-linux-gnu.tar.gz"
+                sha256 "${{ steps.sums.outputs.linux_amd64 }}"
+              end
+              if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+                url "https://github.com/incu6us/mcp-switch/releases/download/${TAG}/mcp-switch-aarch64-unknown-linux-gnu.tar.gz"
+                sha256 "${{ steps.sums.outputs.linux_arm64 }}"
+              end
+            end
+
+            def install
+              bin.install "mcp-switch"
+            end
+
+            test do
+              assert_match version.to_s, shell_output("#{bin}/mcp-switch --version")
+            end
+          end
+          EOF
+          # Remove leading whitespace from heredoc
+          sed -i 's/^          //' mcp-switch.rb
+
+      - name: Push formula to homebrew-tap
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          git clone https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/incu6us/homebrew-tap.git tap
+          cp mcp-switch.rb tap/Formula/mcp-switch.rb
+          cd tap
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add Formula/mcp-switch.rb
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "mcp-switch ${GITHUB_REF_NAME}"
+          git push
