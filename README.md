@@ -1,5 +1,11 @@
 # mcp-switch
 
+[![CI](https://github.com/incu6us/mcp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/incu6us/mcp-switch/actions/workflows/ci.yml)
+[![Release](https://github.com/incu6us/mcp-switch/actions/workflows/release.yml/badge.svg)](https://github.com/incu6us/mcp-switch/actions/workflows/release.yml)
+[![GitHub release](https://img.shields.io/github/v/release/incu6us/mcp-switch)](https://github.com/incu6us/mcp-switch/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Homebrew](https://img.shields.io/badge/homebrew-tap-orange)](https://github.com/incu6us/homebrew-tap)
+
 A fast CLI tool to enable and disable [MCP](https://modelcontextprotocol.io/) server integrations for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) from outside the editor.
 
 ## Motivation
