@@ -16,13 +16,15 @@ mcp-switch off atlassian    # done
 
 ## Installation
 
-### From source
+### Homebrew
 
 ```bash
-git clone https://github.com/user/mcp-switch.git
-cd mcp-switch
-cargo install --path .
+brew install incu6us/homebrew-tap/mcp-switch
 ```
+
+### Download binary
+
+Pre-built binaries for Linux, macOS, and Windows are available on the [Releases](https://github.com/incu6us/mcp-switch/releases) page.
 
 ### With cargo
 
@@ -30,7 +32,13 @@ cargo install --path .
 cargo install mcp-switch
 ```
 
-Requires Rust 1.70+.
+### From source
+
+```bash
+git clone https://github.com/incu6us/mcp-switch.git
+cd mcp-switch
+cargo install --path .
+```
 
 ## Usage
 
