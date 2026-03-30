@@ -64,7 +64,7 @@ jobs:
           Compress-Archive -Path target/${{ matrix.target }}/release/mcp-switch.exe -DestinationPath mcp-switch-${{ matrix.target }}.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: mcp-switch-${{ matrix.target }}
           path: mcp-switch-${{ matrix.target }}.${{ matrix.archive }}
@@ -78,7 +78,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
 
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
 
