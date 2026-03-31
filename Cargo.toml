@@ -3,6 +3,11 @@ name = "mcp-switch"
 version = "1.0.2"
 edition = "2021"
 description = "Enable/disable MCP servers for Claude Code"
+license = "MIT"
+repository = "https://github.com/incu6us/mcp-switch"
+homepage = "https://github.com/incu6us/mcp-switch"
+keywords = ["mcp", "claude", "cli"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
