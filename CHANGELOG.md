@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/incu6us/mcp-switch/compare/v1.0.2...v1.0.3) (2026-03-31)
+
+
+### Bug Fixes
+
+* added crates.io to the pipeline ([d49d119](https://github.com/incu6us/mcp-switch/commit/d49d11912dac38d8be4467029ea0401a0bec76b1))
+
 ## [1.0.2](https://github.com/incu6us/mcp-switch/compare/v1.0.1...v1.0.2) (2026-03-30)
 
 
